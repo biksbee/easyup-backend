@@ -48,7 +48,7 @@ export class PostService {
   }
 
   async delete(id: number, user: ParsedToken): Promise<{success: boolean}> {
-    const existPost = await this.postRepository.findOneBy({ id });
+    const existPost = await this.postRepository.findOneBy({ id, userId: user.id });
     if (!existPost) {
       throw new NotFoundException();
     }

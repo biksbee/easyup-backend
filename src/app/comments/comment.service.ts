@@ -73,11 +73,11 @@ export class CommentService {
   async likeComment(id: number, user: CheckUserType) {
     const comment = await this.get(id);
     if (!comment || comment.user.id === user.id) {
-      throw new BadRequestException();
+      throw new BadRequestException('You can\'t like your own comment');
     }
     const owner = await this.userService.get(user.id);
     if (!owner) {
-      throw new BadRequestException();
+      throw new BadRequestException('You can\'t like your own comment');
     }
     const like = await this.likeRepository.findOneBy({ comment: { id }, user: { id: owner.id }})
     if (like) {
