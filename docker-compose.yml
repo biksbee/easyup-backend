@@ -1,6 +1,6 @@
 services:
   postgres:
-    image: postgres:17
+    image: 'postgres:latest'
     container_name: easyup-db
     restart: always
     env_file:
@@ -8,15 +8,17 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres:/data/postgres
+      - db_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
-      - postgres
+      - app-network
 
   app:
     build:
       context: .
       dockerfile: Dockerfile
     container_name: nest-app-easyup
+    restart: always
     ports:
       - "30110:30110"
     volumes:
@@ -26,10 +28,13 @@ services:
       - PORT=30110
       - DATABASE_PORT=5432
       - DATABASE_HOST=postgres
-      - DATABASE_USER=root
-      - DATABASE_PASSWORD=cat8apple10wheel
-      - DATABASE_DB=easyup
+#      - DATABASE_USER=postgres
+#      - DATABASE_PASSWORD=cat8apple10wheel
+#      - DATABASE_DB=easyup
       - LINK_LIFITIME=1d
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=cat8apple10wheel
+      - POSTGRES_DB=easyup
     depends_on:
       - postgres
     networks:
