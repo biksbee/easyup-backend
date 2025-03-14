@@ -25,5 +25,4 @@ import { AuthGuard } from './modules/auth.guards';
     },
   ]
 })
-export class AppModule {
-}
+export class AppModule {}
